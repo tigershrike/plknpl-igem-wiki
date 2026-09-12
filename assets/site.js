@@ -1,4 +1,4 @@
-const polish=document.createElement('link');polish.rel='stylesheet';polish.href=(location.pathname.split('/').filter(Boolean).length>0?'../':'./')+'assets/refinements.css';document.head.appendChild(polish);
+const root=new URL('../',document.currentScript.src).pathname;const polish=document.createElement('link');polish.rel='stylesheet';polish.href=root+'assets/refinements.css';document.head.appendChild(polish);
 const pages={
   description:{index:'01',title:'Project Description',lead:'A clear starting point for the problem, our biological idea, and the people it may serve.',sections:['The challenge','Our approach','Why it matters']},
   engineering:{index:'02',title:'Engineering',lead:'A living record of design decisions, experiments, results, and the lessons between iterations.',sections:['Design cycle','Iteration one','What we learned']},
@@ -7,7 +7,6 @@ const pages={
   safety:{index:'05',title:'Safety',lead:'A transparent account of risks, safeguards, training, and responsible design choices.',sections:['Risk assessment','Laboratory practice','Responsible future']},
   team:{index:'06',title:'Meet the Team',lead:'Students, mentors, and collaborators bringing different skills to one shared project.',sections:['Students','Advisors','Attributions']}
 };
-const root=location.pathname.split('/').filter(Boolean).length>0?'../':'./';
 const current=document.body.dataset.page;
 document.title=current==='home'?'PLKNPL iGEM 2026':`${pages[current]?.title||'Wiki'} — PLKNPL iGEM`;
 const nav=[['home','Home',''],['description','Project','description/'],['engineering','Engineering','engineering/'],['human-practices','Human Practices','human-practices/'],['contribution','Contribution','contribution/'],['safety','Safety','safety/'],['team','Team','team/']];
