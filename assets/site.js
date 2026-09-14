@@ -7,9 +7,9 @@ document.head.appendChild(polish);
 const groups=[
   {title:'Project',pages:[['description','Description'],['engineering','Engineering'],['contribution','Contribution'],['results','Results']]},
   {title:'Wet Lab',pages:[['protocol','Protocol'],['safety','Safety'],['measurements','Measurements'],['parts','Parts'],['notebook','Notebook']]},
-  {title:'Dry Lab',pages:[['modelling','Modelling'],['human-practices','Human Practice'],['education','Education']]},
   {title:'Team',pages:[['team-members','Team Members'],['attribution','Attribution']]}
 ];
+const standalonePages=[['dry-lab','Dry Lab'],['human-practices','Human Practice'],['education','Education']];
 
 const pageCopy={
   description:['01','Project Description','A clear starting point for the problem, our biological idea, and the people it may serve.',['The challenge','Our approach','Why it matters']],
@@ -21,7 +21,7 @@ const pageCopy={
   measurements:['07','Measurements','How we collected, checked, and compared measurements across the project.',['Measurement plan','Calibration','Data quality']],
   parts:['08','Parts','An organised catalogue of biological parts used, designed, and characterised by the team.',['Part overview','Design notes','Characterisation']],
   notebook:['09','Notebook','A chronological record of laboratory work, decisions, and observations.',['Project timeline','Lab entries','Reflections']],
-  modelling:['10','Modelling','Computational thinking that helps explain, test, and refine our biological system.',['Model design','Assumptions','Simulation results']],
+  'dry-lab':['10','Dry Lab','Computational analysis, data workflows, and design thinking that support our biological work.',['Overview','Methods','Key insights']],
   'human-practices':['11','Human Practice','How conversations, values, and communities shaped the direction of our project.',['Context','Stakeholder voices','Integrated decisions']],
   education:['12','Education','Activities and resources that make synthetic biology more accessible to our community.',['Our audience','Learning activities','What changed']],
   'team-members':['13','Team Members','Students, mentors, and collaborators bringing different skills to one shared project.',['Students','Advisors','Collaborators']],
@@ -32,14 +32,17 @@ const current=document.body.dataset.page;
 const page=pageCopy[current];
 document.title=current==='home'?'PLKNPL iGEM 2026':`${page?.[1]||'Wiki'} — PLKNPL iGEM`;
 
-const navGroups=groups.map(group=>{
+const groupNav=group=>{
   const active=group.pages.some(([slug])=>slug===current);
   return `<details class="nav-group" ${active?'data-active="true"':''}><summary>${group.title}</summary><div class="nav-panel">${group.pages.map(([slug,label])=>`<a href="${root}${slug}/" ${slug===current?'aria-current="page"':''}>${label}</a>`).join('')}</div></details>`;
-}).join('');
+};
+const standaloneNav=standalonePages.map(([slug,label])=>`<a class="standalone-link" href="${root}${slug}/" ${slug===current?'aria-current="page"':''}>${label}</a>`).join('');
+const navItems=`${groupNav(groups[0])}${groupNav(groups[1])}${standaloneNav}${groupNav(groups[2])}`;
 
-const header=`<div class="scroll-progress" aria-hidden="true"></div><a class="skip" href="#content">Skip to content</a><header class="site-header"><a class="brand" href="${root}">PLKNPL <b>iGEM</b><span></span></a><button class="menu-button" aria-expanded="false" aria-controls="site-nav">Menu</button><nav id="site-nav" class="nav" aria-label="Main navigation"><a class="home-link" href="${root}" ${current==='home'?'aria-current="page"':''}>Home</a>${navGroups}</nav></header>`;
+const header=`<div class="scroll-progress" aria-hidden="true"></div><a class="skip" href="#content">Skip to content</a><header class="site-header"><a class="brand" href="${root}">PLKNPL <b>iGEM</b><span></span></a><button class="menu-button" aria-expanded="false" aria-controls="site-nav">Menu</button><nav id="site-nav" class="nav" aria-label="Main navigation"><a class="home-link" href="${root}" ${current==='home'?'aria-current="page"':''}>Home</a>${navItems}</nav></header>`;
 
-const sitemap=groups.map(group=>`<div class="footer-pages-group"><h3>${group.title}</h3>${group.pages.map(([slug,label])=>`<a href="${root}${slug}/">${label}</a>`).join('')}</div>`).join('');
+const footerGroups=[groups[0],groups[1],{title:'Explore',pages:standalonePages},groups[2]];
+const sitemap=footerGroups.map(group=>`<div class="footer-pages-group"><h3>${group.title}</h3>${group.pages.map(([slug,label])=>`<a href="${root}${slug}/">${label}</a>`).join('')}</div>`).join('');
 const instagram='https://www.instagram.com/plknplhkigem/';
 const footer=`<footer class="site-footer"><div class="footer-top"><div><div class="footer-title">PLKNPL<br>iGEM.</div><p class="tiny">Po Leung Kuk Ngan Po Ling College · iGEM 2026</p></div><div class="footer-pages" aria-label="Wiki pages">${sitemap}</div></div><div class="footer-contact"><div><p class="footer-label">Contact the team</p><a class="social-button" href="${instagram}" target="_blank" rel="noopener" aria-label="PLKNPL-HK iGEM on Instagram"><span aria-hidden="true">◎</span> Instagram</a><div class="contact-line"><span class="contact-key">Team email</span><a href="mailto:plknplhkgigem@gmail.com">plknplhkgigem@gmail.com</a></div></div><address><p class="footer-label">School contact</p><div class="contact-line"><span class="contact-key">Phone</span><a href="tel:+85224623932">+852 2462 3932</a></div><div class="contact-line"><span class="contact-key">School email</span><a href="mailto:info@home.npl.edu.hk">info@home.npl.edu.hk</a></div><div class="contact-line"><span class="contact-key">Address</span><span>26 Sung On Street, To Kwa Wan,<br>Kowloon, Hong Kong</span></div></address></div><div class="sponsors" aria-label="Team and sponsors"><p>Team &amp; sponsors</p><div class="sponsor-row"><a href="https://www.npl.edu.hk/" aria-label="Po Leung Kuk Ngan Po Ling College"><img src="${root}assets/plknpl-logo.png" alt="PLKNPL school crest"></a><a href="https://igem.org/" aria-label="iGEM"><img class="igem-mark" src="${root}assets/igem-logo.svg" alt="iGEM logo"></a><a href="https://www.twistbioscience.com/" aria-label="Twist Bioscience"><img src="${root}assets/twist-logo.svg" alt="Twist Bioscience logo"></a><a href="https://www.idtdna.com/" aria-label="Integrated DNA Technologies"><img src="${root}assets/idt-logo.png" alt="Integrated DNA Technologies logo"></a></div></div><p class="footer-legal">Content available under CC BY 4.0 unless otherwise stated.</p></footer>`;
 
