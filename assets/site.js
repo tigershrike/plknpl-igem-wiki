@@ -1,7 +1,7 @@
 const root=new URL('../',document.currentScript.src).pathname;
 const polish=document.createElement('link');
 polish.rel='stylesheet';
-polish.href=root+'assets/refinements.css?v=3';
+polish.href=root+'assets/refinements.css?v=4';
 document.head.appendChild(polish);
 
 const groups=[
